@@ -19,18 +19,22 @@ public class Autor {
     private Long id;
 
     @NotBlank
-    private final String nome;
+    private String nome;
 
     @NotBlank
     @Email
-    private final String email;
+    private String email;
 
     @NotBlank
     @Size(max = 400)
-    private final String descricao;
+    private String descricao;
 
     @NotNull
     private LocalDateTime instanteCriacao = LocalDateTime.now();
+
+    @Deprecated
+    public Autor() {
+    }
 
     public Autor(@NotBlank String nome, @NotBlank @Email String email, @NotBlank @Size(max = 400) String descricao) {
         this.nome = nome;
