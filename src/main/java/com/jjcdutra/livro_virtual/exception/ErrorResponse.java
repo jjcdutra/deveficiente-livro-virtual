@@ -1,4 +1,10 @@
 package com.jjcdutra.livro_virtual.exception;
 
-public record ErrorResponse(int status, String message) {
+import java.util.List;
+
+public record ErrorResponse(
+        int status,
+        String message,
+        List<FieldErrorResponse> errors
+) {
 }

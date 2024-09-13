@@ -4,9 +4,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/autores")
@@ -14,14 +15,6 @@ public class AutorController {
 
     @PersistenceContext
     private EntityManager manager;
-
-    @Autowired
-    private ProibeEmailDuplicadoAutorValidator proibeEmailDuplicadoAutorValidator;
-
-    @InitBinder
-    public void init(WebDataBinder binder) {
-        binder.addValidators(proibeEmailDuplicadoAutorValidator);
-    }
 
     @PostMapping
     @Transactional

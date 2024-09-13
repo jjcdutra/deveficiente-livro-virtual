@@ -1,10 +1,12 @@
 package com.jjcdutra.livro_virtual.novacategoria;
 
+import com.jjcdutra.livro_virtual.validation.Unique;
 import jakarta.validation.constraints.NotBlank;
 
 public class NovaCategoriaRequest {
 
     @NotBlank(message = "O nome da categoria é obrigatório.")
+    @Unique(entity = Categoria.class, field = "nome", message = "Nome da categoria já existe.")
     private String nome;
 
     @Deprecated
