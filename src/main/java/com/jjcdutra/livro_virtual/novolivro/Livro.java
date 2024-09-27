@@ -49,6 +49,9 @@ public class Livro {
     @JoinColumn(name = "autor_id", nullable = false)
     private Autor autor;
 
+    @Deprecated
+    public  Livro() {}
+
     public Livro(String titulo, String resumo, String sumario, Double preco, Integer numeroPaginas, String isbn, LocalDate dataPublicacao, Categoria categoria, Autor autor) {
         this.titulo = titulo;
         this.resumo = resumo;
@@ -59,6 +62,14 @@ public class Livro {
         this.dataPublicacao = dataPublicacao;
         this.categoria = categoria;
         this.autor = autor;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitulo() {
+        return titulo;
     }
 
     @Override
