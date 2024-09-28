@@ -26,4 +26,10 @@ public class GlobalExceptionHandler {
         )).toList();
         return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage(), errors);
     }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundException.class)
+    public ErrorResponse handleNotFoundException(NotFoundException exception) {
+        return new ErrorResponse(HttpStatus.NOT_FOUND.value(), exception.getMessage(), null);
+    }
 }

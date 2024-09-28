@@ -50,7 +50,8 @@ public class Livro {
     private Autor autor;
 
     @Deprecated
-    public  Livro() {}
+    public Livro() {
+    }
 
     public Livro(String titulo, String resumo, String sumario, Double preco, Integer numeroPaginas, String isbn, LocalDate dataPublicacao, Categoria categoria, Autor autor) {
         this.titulo = titulo;
@@ -70,6 +71,34 @@ public class Livro {
 
     public String getTitulo() {
         return titulo;
+    }
+
+    public String getResumo() {
+        return resumo;
+    }
+
+    public String getSumario() {
+        return sumario;
+    }
+
+    public Double getPreco() {
+        return preco;
+    }
+
+    public Integer getNumeroPaginas() {
+        return numeroPaginas;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public Autor getAutor() {
+        return autor;
+    }
+
+    public LocalDate getDataPublicacao() {
+        return dataPublicacao;
     }
 
     @Override

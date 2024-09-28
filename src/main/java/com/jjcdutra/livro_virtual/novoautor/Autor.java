@@ -42,6 +42,26 @@ public class Autor {
         this.descricao = descricao;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public @NotBlank String getNome() {
+        return nome;
+    }
+
+    public @NotBlank @Email String getEmail() {
+        return email;
+    }
+
+    public @NotBlank @Size(max = 400) String getDescricao() {
+        return descricao;
+    }
+
+    public @NotNull LocalDateTime getInstanteCriacao() {
+        return instanteCriacao;
+    }
+
     @Override
     public String toString() {
         return "Autor{" +
