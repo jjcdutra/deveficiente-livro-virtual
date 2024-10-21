@@ -12,7 +12,7 @@ public class NovoAutorRequest {
 
     @Email
     @NotBlank
-    @Unique(entity = Autor.class, field = "email")
+    @Unique(domainClass = Autor.class, fieldName = "email")
     private String email;
 
     @NotBlank

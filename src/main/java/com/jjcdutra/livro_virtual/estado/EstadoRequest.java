@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record EstadoRequest(
         @NotBlank
-        @Unique(entity = Pais.class, field = "nome")
+        @Unique(domainClass = Pais.class, fieldName = "nome")
         String nome,
 
         @NotNull

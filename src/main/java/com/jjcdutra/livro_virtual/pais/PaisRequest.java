@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public record PaisRequest(
         @NotBlank
-        @Unique(entity = Pais.class, field = "nome")
+        @Unique(domainClass = Pais.class, fieldName = "nome")
         String nome
 ) {
 }

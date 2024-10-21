@@ -9,7 +9,7 @@ import org.springframework.util.Assert;
 
 import java.util.List;
 
-public class UniqueValidator implements ConstraintValidator<Unique, Object> {
+public class ExistsIdValidator implements ConstraintValidator<ExistsId, Long> {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -18,25 +18,25 @@ public class UniqueValidator implements ConstraintValidator<Unique, Object> {
     private String fieldName;
 
     @Override
-    public void initialize(Unique constraintAnnotation) {
+    public void initialize(ExistsId constraintAnnotation) {
         this.entityClass = constraintAnnotation.domainClass();
         this.fieldName = constraintAnnotation.fieldName();
     }
 
     @Override
-    public boolean isValid(Object value, ConstraintValidatorContext context) {
+    public boolean isValid(Long value, ConstraintValidatorContext context) {
         // Pode considerar valores nulos como válidos ou ajustar conforme necessidade
-//        if (value == null) {
-//            return true;
-//        }
+        if (value == null) {
+            return true;
+        }
 
         String queryString = "select 1 from " + entityClass.getName() + " where " + fieldName + "=:value";
         Query query = entityManager.createQuery(queryString);
         query.setParameter("value", value);
-        List<?> list = query.getResultList();
-        Assert.state(list.size() <= 1,
-                "Foi encontrado mais de um " + entityClass + " com o atributo " + fieldName + " = " + value);
 
-        return list.isEmpty();
+        List<?> list = query.getResultList();
+        Assert.isTrue(list.size() <=1, "Id " + value + " não está cadastrado na base de dados.");
+
+        return !list.isEmpty();
     }
 }
