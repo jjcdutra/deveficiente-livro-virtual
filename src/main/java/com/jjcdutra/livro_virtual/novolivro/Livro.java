@@ -5,7 +5,9 @@ import com.jjcdutra.livro_virtual.novoautor.Autor;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 public class Livro {
@@ -27,7 +29,7 @@ public class Livro {
 
     @NotNull(message = "O preço é obrigatório")
     @Min(value = 20, message = "O preço mínimo é 20")
-    private Double preco;
+    private BigDecimal preco;
 
     @NotNull(message = "O número de páginas é obrigatório")
     @Min(value = 100, message = "O número mínimo de páginas é 100")
@@ -53,7 +55,7 @@ public class Livro {
     public Livro() {
     }
 
-    public Livro(String titulo, String resumo, String sumario, Double preco, Integer numeroPaginas, String isbn, LocalDate dataPublicacao, Categoria categoria, Autor autor) {
+    public Livro(String titulo, String resumo, String sumario, BigDecimal preco, Integer numeroPaginas, String isbn, LocalDate dataPublicacao, Categoria categoria, Autor autor) {
         this.titulo = titulo;
         this.resumo = resumo;
         this.sumario = sumario;
@@ -81,7 +83,7 @@ public class Livro {
         return sumario;
     }
 
-    public Double getPreco() {
+    public BigDecimal getPreco() {
         return preco;
     }
 
@@ -115,5 +117,18 @@ public class Livro {
                 ", categoria=" + categoria +
                 ", autor=" + autor +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Livro livro = (Livro) o;
+        return Objects.equals(getIsbn(), livro.getIsbn());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getIsbn());
     }
 }

@@ -7,6 +7,7 @@ import com.jjcdutra.livro_virtual.novoautor.Autor;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.constraints.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import static com.fasterxml.jackson.annotation.JsonFormat.Shape;
@@ -24,7 +25,7 @@ public class NovoLivroRequest {
 
     @NotNull(message = "O preço é obrigatório")
     @Min(value = 20, message = "O preço mínimo é 20")
-    private Double preco;
+    private BigDecimal preco;
 
     @NotNull(message = "O número de páginas é obrigatório")
     @Min(value = 100, message = "O número mínimo de páginas é 100")
@@ -47,7 +48,7 @@ public class NovoLivroRequest {
     public NovoLivroRequest(String titulo,
                             String resumo,
                             String sumario,
-                            Double preco,
+                            BigDecimal preco,
                             Integer numeroPaginas,
                             String isbn,
                             @JsonProperty("dataPublicacao") LocalDate dataPublicacao,

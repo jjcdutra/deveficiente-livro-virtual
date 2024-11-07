@@ -2,13 +2,14 @@ package com.jjcdutra.livro_virtual.detalhesitelivro;
 
 import com.jjcdutra.livro_virtual.novolivro.Livro;
 
+import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
 
 public record DetalheLivroSiteResponse(
         String titulo,
         String resumo,
         String sumario,
-        Double preco,
+        BigDecimal preco,
         Integer numeroPaginas,
         String isbn,
         String dataPublicacao,
