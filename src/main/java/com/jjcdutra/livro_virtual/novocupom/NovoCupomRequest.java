@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record NovoCupomRequest(
@@ -17,7 +18,7 @@ public record NovoCupomRequest(
 
         @NotNull
         @Positive
-        int percentual,
+        BigDecimal percentual,
 
         @Future
         @JsonFormat(pattern = "dd/MM/yyyy", shape = JsonFormat.Shape.STRING)
@@ -29,7 +30,7 @@ public record NovoCupomRequest(
         return "NovoCupomRequest{" +
                 "codigo='" + codigo + '\'' +
                 ", percentual=" + percentual +
-                ", validade=" + validade +
+                ", validadeMomento=" + validade +
                 '}';
     }
 

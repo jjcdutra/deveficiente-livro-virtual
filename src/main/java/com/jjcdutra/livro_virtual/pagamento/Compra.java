@@ -1,6 +1,8 @@
 package com.jjcdutra.livro_virtual.pagamento;
 
 import com.jjcdutra.livro_virtual.estado.Estado;
+import com.jjcdutra.livro_virtual.novocupom.Cupom;
+import com.jjcdutra.livro_virtual.novocupom.CupomAplicado;
 import com.jjcdutra.livro_virtual.pais.Pais;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -53,6 +55,9 @@ public class Compra {
     @OneToOne(mappedBy = "compra", cascade = CascadeType.PERSIST)
     private Pedido pedido;
 
+    @Embedded
+    private CupomAplicado cupomAplicado;
+
     public Compra(String email,
                   String nome,
                   String sobrenome,
@@ -95,6 +100,13 @@ public class Compra {
                 ", telefone='" + telefone + '\'' +
                 ", cep='" + cep + '\'' +
                 ", pedido=" + pedido +
+                ", cupomAplicado=" + cupomAplicado +
                 '}';
+    }
+
+    public void aplicaCupom(Cupom cupom) {
+        Assert.isTrue(cupom.isValid(), "Cupom aplicado não está valido");
+        Assert.isNull(this.cupomAplicado, "Não pode ser trocado um cupom de uma compra");
+        this.cupomAplicado = new CupomAplicado(cupom);
     }
 }

@@ -1,7 +1,6 @@
 package com.jjcdutra.livro_virtual.novocupom;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.jjcdutra.livro_virtual.validation.Unique;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,6 +10,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -25,16 +25,32 @@ public class Cupom {
 
     @NotNull
     @Positive
-    private int percentual;
+    private BigDecimal percentual;
 
     @Future
     @JsonFormat(pattern = "dd/MM/yyyy", shape = JsonFormat.Shape.STRING)
     private LocalDate validade;
 
-    public Cupom(String codigo, int percentual, LocalDate validade) {
+    @Deprecated
+    public Cupom() {
+    }
+
+    public Cupom(String codigo, BigDecimal percentual, LocalDate validade) {
         this.codigo = codigo;
         this.percentual = percentual;
         this.validade = validade;
+    }
+
+    public boolean isValid() {
+        return LocalDate.now().isBefore(this.validade);
+    }
+
+    public LocalDate getValidade() {
+        return validade;
+    }
+
+    public @NotNull @Positive BigDecimal getPercentual() {
+        return percentual;
     }
 
     @Override
@@ -43,7 +59,7 @@ public class Cupom {
                 "id=" + id +
                 ", codigo='" + codigo + '\'' +
                 ", percentual=" + percentual +
-                ", validade=" + validade +
+                ", validadeMomento=" + validade +
                 '}';
     }
 }

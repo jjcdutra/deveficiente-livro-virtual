@@ -1,5 +1,6 @@
 package com.jjcdutra.livro_virtual.pagamento;
 
+import com.jjcdutra.livro_virtual.novocupom.CupomRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -16,6 +17,9 @@ public class PagamentoController {
     private EntityManager manager;
 
     @Autowired
+    private CupomRepository cupomRepository;
+
+    @Autowired
     private EstadoPertenceAPaisValidator estadoPertenceAPaisValidator;
 
     @InitBinder
@@ -26,7 +30,7 @@ public class PagamentoController {
     @PostMapping
     @Transactional
     public String criar(@RequestBody @Valid NovaCompraRequest request) {
-        Compra compra = request.toModel(manager);
+        Compra compra = request.toModel(manager, cupomRepository);
         manager.persist(compra);
         return compra.toString();
     }

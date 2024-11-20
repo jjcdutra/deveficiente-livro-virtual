@@ -9,7 +9,7 @@ import org.springframework.util.Assert;
 
 import java.util.List;
 
-public class ExistsIdValidator implements ConstraintValidator<ExistsId, Long> {
+public class ExistsIdValidator implements ConstraintValidator<ExistsId, Object> {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -24,7 +24,7 @@ public class ExistsIdValidator implements ConstraintValidator<ExistsId, Long> {
     }
 
     @Override
-    public boolean isValid(Long value, ConstraintValidatorContext context) {
+    public boolean isValid(Object value, ConstraintValidatorContext context) {
         // Pode considerar valores nulos como válidos ou ajustar conforme necessidade
         if (value == null) {
             return true;
@@ -35,7 +35,7 @@ public class ExistsIdValidator implements ConstraintValidator<ExistsId, Long> {
         query.setParameter("value", value);
 
         List<?> list = query.getResultList();
-        Assert.isTrue(list.size() <=1, "Id " + value + " não está cadastrado na base de dados.");
+        Assert.isTrue(list.size() <= 1, "Id " + value + " não está cadastrado na base de dados.");
 
         return !list.isEmpty();
     }

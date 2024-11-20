@@ -1,14 +1,16 @@
 package com.jjcdutra.livro_virtual.pagamento;
 
 import com.jjcdutra.livro_virtual.estado.Estado;
+import com.jjcdutra.livro_virtual.novocupom.Cupom;
+import com.jjcdutra.livro_virtual.novocupom.CupomRepository;
 import com.jjcdutra.livro_virtual.pais.Pais;
 import com.jjcdutra.livro_virtual.validation.ExistsId;
 import jakarta.persistence.EntityManager;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -53,13 +55,20 @@ public record NovaCompraRequest(
         String cep,
 
         @NotNull
-        NovoPedidoRequest pedido
+        NovoPedidoRequest pedido,
+
+        @ExistsId(domainClass = Cupom.class, fieldName = "codigo")
+        String codigoCupom
 ) {
     public boolean temEstado() {
         return Optional.ofNullable(estadoId).isPresent();
     }
 
-    public Compra toModel(EntityManager manager) {
+    public Optional<String> getCodigoCupom() {
+        return Optional.ofNullable(this.codigoCupom);
+    }
+
+    public Compra toModel(EntityManager manager, CupomRepository cupomRepository) {
         Pais pais = manager.find(Pais.class, paisId);
 
         Function<Compra, Pedido> funcaoCriacaoPedido = pedido.toModel(manager);
@@ -69,6 +78,10 @@ public record NovaCompraRequest(
             compra.setEstado(manager.find(Estado.class, estadoId));
         }
 
+        if (StringUtils.hasText(codigoCupom)) {
+            Cupom cupom = cupomRepository.getByCodigo(codigoCupom);
+            compra.aplicaCupom(cupom);
+        }
 
         return compra;
     }
