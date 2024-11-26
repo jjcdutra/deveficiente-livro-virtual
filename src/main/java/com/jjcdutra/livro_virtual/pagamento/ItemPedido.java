@@ -45,6 +45,18 @@ public class ItemPedido {
                 '}';
     }
 
+    public @NotNull Livro getLivro() {
+        return livro;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public BigDecimal getPrecoMomento() {
+        return precoMomento;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

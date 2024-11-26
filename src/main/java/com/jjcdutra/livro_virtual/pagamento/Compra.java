@@ -9,7 +9,10 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.function.Function;
 
 @Entity
@@ -57,6 +60,10 @@ public class Compra {
 
     @Embedded
     private CupomAplicado cupomAplicado;
+
+    @Deprecated
+    public Compra() {
+    }
 
     public Compra(String email,
                   String nome,
@@ -108,5 +115,28 @@ public class Compra {
         Assert.isTrue(cupom.isValid(), "Cupom aplicado não está valido");
         Assert.isNull(this.cupomAplicado, "Não pode ser trocado um cupom de uma compra");
         this.cupomAplicado = new CupomAplicado(cupom);
+    }
+
+    private BigDecimal aplicaDescontoCupom(ItemPedido itemPedido) {
+        BigDecimal valorDesconto = itemPedido.getPrecoMomento()
+                .multiply(cupomAplicado.getPercentualDescontoMomento()
+                        .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP));
+
+        return itemPedido.getPrecoMomento().subtract(valorDesconto);
+    }
+
+    public CompraResponse toResponse() {
+        return pedido.getItens().stream().map(item -> new CompraResponse(
+                        item.getLivro().getTitulo(),
+                        item.getLivro().getIsbn(),
+                        item.getLivro().getDataPublicacao(),
+                        item.getLivro().getCategoria().getNome(),
+                        item.getLivro().getAutor().getNome(),
+                        item.getQuantidade(),
+                        pedido.getTotalPedido(),
+                        !ObjectUtils.isEmpty(cupomAplicado),
+                        !ObjectUtils.isEmpty(cupomAplicado) ? aplicaDescontoCupom(item) : null
+                )
+        ).findFirst().orElseThrow();
     }
 }

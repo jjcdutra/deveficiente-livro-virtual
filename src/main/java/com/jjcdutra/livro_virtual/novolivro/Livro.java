@@ -103,6 +103,10 @@ public class Livro {
         return dataPublicacao;
     }
 
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
     @Override
     public String toString() {
         return "Livro{" +

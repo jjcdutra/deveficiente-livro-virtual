@@ -27,17 +27,29 @@ public class Pedido {
     @ElementCollection
     private Set<ItemPedido> itens = new HashSet<>();
 
+    @Deprecated
+    public Pedido() {
+    }
+
     public Pedido(@NotNull @Valid Compra compra, @Size(min = 1) Set<ItemPedido> itens) {
         Assert.isTrue(!itens.isEmpty(), "Todo pedido deve ter pelo menos 1 item");
         this.compra = compra;
         this.itens.addAll(itens);
     }
 
+    public @Size(min = 1) Set<ItemPedido> getItens() {
+        return itens;
+    }
+
     public boolean totalIgual(@Positive @NotNull BigDecimal total) {
 
-        BigDecimal totalPedido = itens.stream().map(ItemPedido::total).reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal totalPedido = getTotalPedido();
 
         return totalPedido.equals(total);
+    }
+
+    public BigDecimal getTotalPedido() {
+        return itens.stream().map(ItemPedido::total).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Override

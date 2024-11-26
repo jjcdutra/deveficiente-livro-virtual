@@ -34,4 +34,11 @@ public class PagamentoController {
         manager.persist(compra);
         return compra.toString();
     }
+
+    @GetMapping("/{id}")
+    public String consutlarCompra(@PathVariable Long id) {
+        Compra compra = manager.find(Compra.class, id);
+        CompraResponse response = compra.toResponse();
+        return response.toString();
+    }
 }

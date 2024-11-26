@@ -45,6 +45,10 @@ public class Cupom {
         return LocalDate.now().isBefore(this.validade);
     }
 
+    public @NotBlank String getCodigo() {
+        return codigo;
+    }
+
     public LocalDate getValidade() {
         return validade;
     }
